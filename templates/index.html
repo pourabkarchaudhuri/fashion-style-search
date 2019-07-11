@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+    <title>VIS</title>
+    <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <style> 
+            input[type=button], input[type=submit], input[type=reset] {
+              background-color: black;
+              border: none;
+              color: white;
+              padding: 10px 27px;
+              text-decoration: none;
+              margin: 4px 2px;
+              cursor: pointer;
+            }
+            </style>
+
+        <script>
+            function round(scoreValue){
+                return scoreValue.toFixed(2);
+            }
+        </script>
+    </head>
+    
+    <body>
+        <div class="container">
+            <div class="row" style="text-align: center; top: 20px; position: relative;">
+                <img src="https://www.michaelkors.global/img/logo_mk.png" width="200px">
+            </div>
+            <div class="row">
+                <h4 style="text-align: center; top:20px; position: relative;font-family: monospace">Style Search</h4>
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data">
+                <div class="row" style="position: relative; top: 20px">
+                    <div class="col-md-6">
+                        <input type="file" name="query_img">
+                        
+                    </div>
+                    <div class="col-md-6">
+                        <input type="submit">
+                    </div>
+                    
+                </div>
+            </form>
+            
+            
+            
+            <div class="row" style="position: relative;margin-top:30px;">
+                <div class="col-md-3">
+                    <!-- <h4 style="font-family: monospace;">Your awesome picture</h4> -->
+                    {% if query_path %}
+                    <img src="{{ query_path }}" width="250px">
+                    <div style="border: 1px solid;
+                        position: relative;
+                        top: 5px;
+                        text-align: center;
+                        font-family: monospace;
+                        text-transform: capitalize;
+                        width:250px;">
+                                Your Awesome Photo
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-9" style="position: relative; left: 30px">
+                    <!-- <h4 style="font-family: monospace;">Style Matches</h4> -->
+                    {% if scores == "None" %}
+                        <div>Looks like we don't have anything that matches your unique style!</div>
+                    {% else %}
+                        {% for score in scores %}
+                        <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
+                            <img src="{{ score[1] }}" height="200px">
+                            <!-- <figcaption>{{ score[0] }}</figcaption> -->
+                            <!-- <div>{{ names[loop.index - 1][1] }}</div> -->
+                                {% set name = names[loop.index - 1][1].split('_') %}
+                        
+                            <div style="border: 1px solid;
+                            position: relative;
+                            top: 5px;
+                            text-align: center;
+                            font-family: monospace;
+                            text-transform: capitalize;">
+                                    {{ name[1] }} : {{ name[0] }}
+                            </div>
+                            
+                                
+                        
+                            
+                            
+                            
+                        </figure>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+          
+           
+           
+        </div>
+        
+    </body>
+</html>
+
+
