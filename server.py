@@ -14,7 +14,8 @@ from operator import itemgetter
 app = Flask(__name__)
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-BASE_URL = "http://52.172.32.166:4000/"
+# BASE_URL = "http://52.172.32.166:4000/"
+BASE_URL = "http://localhost:4000/"
 
 # Read image features
 fe = FeatureExtractor()
@@ -24,6 +25,7 @@ img_name = []
 
 for feature_path in glob.glob("static/feature/*"):
     features.append(pickle.load(open(feature_path, 'rb')))
+    # print('static/img/' + os.path.splitext(os.path.basename(feature_path))[1] + '.jpg')
     img_paths.append('static/img/' + os.path.splitext(os.path.basename(feature_path))[0] + '.jpg')
     img_name.append(os.path.splitext(os.path.basename(feature_path))[0])
 
@@ -112,8 +114,8 @@ def post_example():
             else:
                 body = request.get_json()
                 if "image_string" in body.keys():
-                    img_string = body['image_string']
-                    str_image = img_string.split(',')[1]
+                    str_image = body['image_string']
+                    # str_image = img_string.split(',')[1]
                     imgdata = base64.b64decode(str_image)
                     img = "static\\uploaded\\" +  str(int(round(time.time() * 1000))) + "image_file.jpg"
                     with open(img, 'wb') as f:
