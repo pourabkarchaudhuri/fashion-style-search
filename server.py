@@ -14,8 +14,8 @@ from operator import itemgetter
 app = Flask(__name__)
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-# BASE_URL = "http://52.172.32.166:4000/"
-BASE_URL = "http://localhost:4000/"
+BASE_URL = "http://52.172.32.166:4000/"
+# BASE_URL = "http://localhost:4000/"
 
 # Read image features
 fe = FeatureExtractor()
