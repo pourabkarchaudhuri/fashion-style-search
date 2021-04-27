@@ -1,4 +1,5 @@
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import numpy as np
 from PIL import Image
 from feature_extractor import FeatureExtractor
@@ -12,10 +13,10 @@ import base64
 import time
 from operator import itemgetter
 app = Flask(__name__)
-
+PORT = 4000
 dir_path = os.path.dirname(os.path.realpath(__file__))
-BASE_URL = "http://52.172.32.166:4000/"
-# BASE_URL = "http://localhost:4000/"
+# BASE_URL = "http://52.172.32.166:4000/"
+BASE_URL = "http://localhost:"+str(PORT)+"/"
 
 # Read image features
 fe = FeatureExtractor()
@@ -26,7 +27,7 @@ img_name = []
 for feature_path in glob.glob("static/feature/*"):
     features.append(pickle.load(open(feature_path, 'rb')))
     # print('static/img/' + os.path.splitext(os.path.basename(feature_path))[1] + '.jpg')
-    img_paths.append('static/img/' + os.path.splitext(os.path.basename(feature_path))[0] + '.jpg')
+    img_paths.append('static/img/' + os.path.splitext(os.path.basename(feature_path))[0] + '.png')
     img_name.append(os.path.splitext(os.path.basename(feature_path))[0])
 
 
@@ -42,7 +43,7 @@ def index():
 
         query = fe.extract(img)
         dists = np.linalg.norm(features - query, axis=1)  # Do search
-        ids = np.argsort(dists)[:10] # Top 8 results
+        ids = np.argsort(dists)[:3] # Top 8 results
         print(ids)
         for id in ids:
             if (0 <= dists[id] <= 2):
@@ -58,6 +59,7 @@ def index():
         for idx, x in enumerate(scores):
             # x(len(x.split('/')))
             t = x[1].split('/')
+            print(t)
             filename = t[len(t) - 1].split('.')[0]
             for index, y in enumerate(names):
                 if (y[1] == filename):
@@ -94,7 +96,7 @@ def post_example():
                 #print (img)
                 query = fe.extract(img)
                 dists = np.linalg.norm(features - query, axis=1)  # Do search
-                ids = np.argsort(dists)[:10] # Top 8 results
+                ids = np.argsort(dists)[:3] # Top 8 results
                 data ={ "details" : []}
                 def add_info(info):
                     data["details"].append(info)
@@ -155,4 +157,4 @@ def get_status_code(argument, message):
     return res
 
 if __name__=="__main__":
-    app.run(host="0.0.0.0", port=4000)
+    app.run(host="0.0.0.0", port=PORT)
